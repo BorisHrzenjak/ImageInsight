@@ -96,8 +96,61 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function describeImage() {
-        // TODO: Implement Vision API call
-        outputText.value = "Image description not implemented yet.";
+        chrome.storage.sync.get(['mistralApiKey'], function(result) {
+            if (!result.mistralApiKey) {
+                outputText.value = "Please set your Mistral API key in the settings.";
+                return;
+            }
+
+            const apiKey = result.mistralApiKey;
+            const imageData = imagePreview.src.split(',')[1]; // Get base64 image data
+
+            fetch('https://api.mistral.ai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: "pixtral-12b",
+                    messages: [
+                        {
+                            role: "user",
+                            content: [
+                                {
+                                    type: "text",
+                                    text: "Describe this image in detail."
+                                },
+                                {
+                                    type: "image_url",
+                                    image_url: {
+                                        url: `data:image/jpeg;base64,${imageData}`
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    max_tokens: 500
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.choices && data.choices.length > 0) {
+                    outputText.value = data.choices[0].message.content;
+                } else {
+                    outputText.value = "No description generated.";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                outputText.value = `An error occurred during image description: ${error.message}`;
+            });
+        });
     }
 
     function downloadText() {
