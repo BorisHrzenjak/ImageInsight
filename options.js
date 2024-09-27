@@ -1,20 +1,42 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const ocrApiKey = document.getElementById('ocrApiKey');
+    const ocrSpaceApiKey = document.getElementById('ocrSpaceApiKey');
     const visionApiKey = document.getElementById('visionApiKey');
-    const saveButton = document.getElementById('saveButton');
+    const saveOcrSpaceApiKey = document.getElementById('saveOcrSpaceApiKey');
+    const saveVisionApiKey = document.getElementById('saveVisionApiKey');
 
     // Load saved API keys
-    chrome.storage.sync.get(['ocrApiKey', 'visionApiKey'], function(result) {
-        ocrApiKey.value = result.ocrApiKey || '';
-        visionApiKey.value = result.visionApiKey || '';
+    chrome.storage.sync.get(['ocrSpaceApiKey', 'visionApiKey'], function(result) {
+        ocrSpaceApiKey.value = result.ocrSpaceApiKey ? '••••••••' : '';
+        visionApiKey.value = result.visionApiKey ? '••••••••' : '';
     });
 
-    saveButton.addEventListener('click', function() {
+    saveOcrSpaceApiKey.addEventListener('click', function() {
         chrome.storage.sync.set({
-            ocrApiKey: ocrApiKey.value,
+            ocrSpaceApiKey: ocrSpaceApiKey.value
+        }, function() {
+            alert('OCRSpace API Key saved');
+            ocrSpaceApiKey.value = '••••••••';
+        });
+    });
+
+    saveVisionApiKey.addEventListener('click', function() {
+        chrome.storage.sync.set({
             visionApiKey: visionApiKey.value
         }, function() {
-            alert('Settings saved');
+            alert('Vision API Key saved');
+            visionApiKey.value = '••••••••';
         });
+    });
+
+    ocrSpaceApiKey.addEventListener('focus', function() {
+        if (this.value === '••••••••') {
+            this.value = '';
+        }
+    });
+
+    visionApiKey.addEventListener('focus', function() {
+        if (this.value === '••••••••') {
+            this.value = '';
+        }
     });
 });

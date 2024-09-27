@@ -10,19 +10,32 @@
             padding: 10px;
             font-family: Arial, sans-serif;
         }
-        input {
-            width: 100%;
+        .api-key-container {
+            display: flex;
+            align-items: center;
             margin-bottom: 10px;
+        }
+        input {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        button {
+            white-space: nowrap;
         }
     </style>
 </head>
 <body>
     <h2>API Settings</h2>
-    <label for="ocrApiKey">OCR API Key:</label>
-    <input type="password" id="ocrApiKey">
-    <label for="visionApiKey">Vision API Key:</label>
-    <input type="password" id="visionApiKey">
-    <button id="saveButton">Save</button>
+    <div class="api-key-container">
+        <label for="ocrSpaceApiKey">OCRSpace API Key:</label>
+        <input type="password" id="ocrSpaceApiKey">
+        <button id="saveOcrSpaceApiKey">Save</button>
+    </div>
+    <div class="api-key-container">
+        <label for="visionApiKey">Vision API Key:</label>
+        <input type="password" id="visionApiKey">
+        <button id="saveVisionApiKey">Save</button>
+    </div>
     <script src="options.js"></script>
 </body>
 </html>

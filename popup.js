@@ -50,8 +50,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function extractText() {
-        // TODO: Implement OCR API call
-        outputText.value = "OCR text extraction not implemented yet.";
+        chrome.storage.sync.get(['ocrSpaceApiKey'], function(result) {
+            if (!result.ocrSpaceApiKey) {
+                outputText.value = "Please set your OCRSpace API key in the settings.";
+                return;
+            }
+
+            const apiKey = result.ocrSpaceApiKey;
+            const imageData = imagePreview.src.split(',')[1];
+
+            fetch('https://api.ocr.space/parse/image', {
+                method: 'POST',
+                headers: {
+                    'apikey': apiKey,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `base64Image=${encodeURIComponent(imageData)}&language=eng&isOverlayRequired=false`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ParsedResults && data.ParsedResults.length > 0) {
+                    outputText.value = data.ParsedResults[0].ParsedText;
+                } else {
+                    outputText.value = "No text found in the image.";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                outputText.value = "An error occurred during OCR processing.";
+            });
+        });
     }
 
     function describeImage() {
