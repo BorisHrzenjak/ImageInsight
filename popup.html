@@ -4,36 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Insight</title>
-    <style>
-        body {
-            width: 300px;
-            padding: 10px;
-            font-family: Arial, sans-serif;
-        }
-        #imagePreview {
-            max-width: 100%;
-            margin-top: 10px;
-        }
-        #outputText {
-            width: 100%;
-            height: 100px;
-            margin-top: 10px;
-        }
-        button {
-            margin-top: 5px;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <input type="file" id="imageUpload" accept="image/*">
-    <button id="pasteImage">Paste Image</button>
-    <img id="imagePreview">
-    <button id="extractButton">Extract</button>
-    <button id="describeButton">Describe</button>
-    <textarea id="outputText" readonly></textarea>
-    <button id="downloadButton">Download</button>
-    <button id="copyButton">Copy</button>
-    <button id="settingsButton">Settings</button>
+<body class="bg-gray-100 p-6 w-96">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-4 text-gray-800">Image Insight</h1>
+        <div class="mb-4">
+            <label for="imageUpload" class="bg-blue-500 text-white py-2 px-4 rounded cursor-pointer hover:bg-blue-600 transition duration-300">
+                Upload Image
+                <input type="file" id="imageUpload" accept="image/*" class="hidden">
+            </label>
+            <button id="pasteImage" class="ml-2 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300">Paste Image</button>
+        </div>
+        <img id="imagePreview" class="max-w-full h-auto mb-4 rounded shadow-sm">
+        <div class="flex space-x-2 mb-4">
+            <button id="extractButton" class="flex-1 bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition duration-300">Extract</button>
+            <button id="describeButton" class="flex-1 bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600 transition duration-300">Describe</button>
+        </div>
+        <textarea id="outputText" readonly class="w-full h-32 p-2 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        <div class="flex space-x-2">
+            <button id="downloadButton" class="flex-1 bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition duration-300">Download</button>
+            <button id="copyButton" class="flex-1 bg-pink-500 text-white py-2 px-4 rounded hover:bg-pink-600 transition duration-300">Copy</button>
+        </div>
+        <button id="settingsButton" class="mt-4 w-full bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 transition duration-300">Settings</button>
+    </div>
     <script src="popup.js"></script>
 </body>
 </html>

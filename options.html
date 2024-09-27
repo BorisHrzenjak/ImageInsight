@@ -4,37 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Insight Settings</title>
-    <style>
-        body {
-            width: 300px;
-            padding: 10px;
-            font-family: Arial, sans-serif;
-        }
-        .api-key-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        input {
-            flex-grow: 1;
-            margin-right: 10px;
-        }
-        button {
-            white-space: nowrap;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h2>API Settings</h2>
-    <div class="api-key-container">
-        <label for="ocrSpaceApiKey">OCRSpace API Key:</label>
-        <input type="password" id="ocrSpaceApiKey">
-        <button id="saveOcrSpaceApiKey">Save</button>
-    </div>
-    <div class="api-key-container">
-        <label for="mistralApiKey">Mistral API Key:</label>
-        <input type="password" id="mistralApiKey">
-        <button id="saveMistralApiKey">Save</button>
+<body class="bg-gray-100 p-6">
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">API Settings</h2>
+        <div class="space-y-4">
+            <div>
+                <label for="ocrSpaceApiKey" class="block text-sm font-medium text-gray-700 mb-1">OCRSpace API Key:</label>
+                <div class="flex">
+                    <input type="password" id="ocrSpaceApiKey" class="flex-grow mr-2 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="saveOcrSpaceApiKey" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300">Save</button>
+                </div>
+            </div>
+            <div>
+                <label for="mistralApiKey" class="block text-sm font-medium text-gray-700 mb-1">Mistral API Key:</label>
+                <div class="flex">
+                    <input type="password" id="mistralApiKey" class="flex-grow mr-2 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="saveMistralApiKey" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300">Save</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="options.js"></script>
 </body>
