@@ -170,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function openSettings() {
-        chrome.runtime.openOptionsPage();
+        const settingsPanel = document.getElementById('settingsPanel');
+        settingsPanel.classList.toggle('hidden');
     }
 });
