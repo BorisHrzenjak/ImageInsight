@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     const ocrSpaceApiKey = document.getElementById('ocrSpaceApiKey');
-    const visionApiKey = document.getElementById('visionApiKey');
+    const mistralApiKey = document.getElementById('mistralApiKey');
     const saveOcrSpaceApiKey = document.getElementById('saveOcrSpaceApiKey');
-    const saveVisionApiKey = document.getElementById('saveVisionApiKey');
+    const saveMistralApiKey = document.getElementById('saveMistralApiKey');
 
     // Load saved API keys
-    chrome.storage.sync.get(['ocrSpaceApiKey', 'visionApiKey'], function(result) {
+    chrome.storage.sync.get(['ocrSpaceApiKey', 'mistralApiKey'], function(result) {
         ocrSpaceApiKey.value = result.ocrSpaceApiKey ? '••••••••' : '';
-        visionApiKey.value = result.visionApiKey ? '••••••••' : '';
+        mistralApiKey.value = result.mistralApiKey ? '••••••••' : '';
     });
 
     saveOcrSpaceApiKey.addEventListener('click', function() {
@@ -19,12 +19,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    saveVisionApiKey.addEventListener('click', function() {
+    saveMistralApiKey.addEventListener('click', function() {
         chrome.storage.sync.set({
-            visionApiKey: visionApiKey.value
+            mistralApiKey: mistralApiKey.value
         }, function() {
-            alert('Vision API Key saved');
-            visionApiKey.value = '••••••••';
+            alert('Mistral API Key saved');
+            mistralApiKey.value = '••••••••';
         });
     });
 
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    visionApiKey.addEventListener('focus', function() {
+    mistralApiKey.addEventListener('focus', function() {
         if (this.value === '••••••••') {
             this.value = '';
         }
