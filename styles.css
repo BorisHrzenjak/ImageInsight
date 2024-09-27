@@ -6,6 +6,7 @@ body {
     margin: 0;
     padding: 0;
     transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 14px; /* Reduced from default 16px */
 }
 
 body.dark {
@@ -14,22 +15,23 @@ body.dark {
 }
 
 .container {
-    width: 360px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 288px; /* Reduced from 360px (20% smaller) */
+    padding: 16px; /* Reduced from 20px */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
     background-color: #ffffff;
     transition: background-color 0.3s ease;
 }
 
 body.dark .container {
     background-color: #374151;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 h1 {
     color: #1f2937;
-    margin-bottom: 20px;
+    margin-bottom: 16px; /* Reduced from 20px */
     text-align: center;
+    font-size: 1.6em; /* Adjusted for smaller overall size */
 }
 
 body.dark h1 {
@@ -39,16 +41,19 @@ body.dark h1 {
 .btn {
     transition: all 0.3s ease;
     font-weight: 500;
+    padding: 8px 12px; /* Reduced padding */
+    font-size: 0.9em; /* Slightly smaller font size */
 }
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
 #imagePreviewContainer {
     border: 2px dashed #d1d5db;
     transition: all 0.3s ease;
+    height: 160px; /* Reduced from 200px (assuming original height was 200px) */
 }
 
 body.dark #imagePreviewContainer {
@@ -67,10 +72,11 @@ body.dark #imagePreviewContainer {
 
 textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 80px; /* Reduced from 100px */
     background-color: #ffffff;
     color: #1f2937;
     transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 0.9em; /* Slightly smaller font size */
 }
 
 body.dark textarea {
@@ -81,17 +87,17 @@ body.dark textarea {
 
 .settings-panel {
     background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    padding: 20px;
+    border-radius: 6px; /* Slightly reduced from 8px */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 16px; /* Reduced from 20px */
+    padding: 16px; /* Reduced from 20px */
     display: none;
     transition: background-color 0.3s ease;
 }
 
 body.dark .settings-panel {
     background-color: #374151;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
 }
 
 .settings-panel.active {
@@ -100,7 +106,7 @@ body.dark .settings-panel {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
+    from { opacity: 0; transform: translateY(-8px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
@@ -108,15 +114,15 @@ body.dark .settings-panel {
     display: none;
     justify-content: center;
     align-items: center;
-    height: 100px;
+    height: 80px; /* Reduced from 100px */
 }
 
 .loading-spinner {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #3498db;
+    border: 3px solid #f3f3f3; /* Reduced from 4px */
+    border-top: 3px solid #3498db;
     border-radius: 50%;
-    width: 40px;
-    height: 40px;
+    width: 32px; /* Reduced from 40px */
+    height: 32px; /* Reduced from 40px */
     animation: spin 1s linear infinite;
 }
 
@@ -134,7 +140,7 @@ body.dark .loading-spinner {
 .dark-mode-toggle {
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 8px; /* Reduced from 10px */
 }
 
 .dark-mode-toggle input[type="checkbox"] {
@@ -146,8 +152,8 @@ body.dark .loading-spinner {
 .dark-mode-toggle label {
     cursor: pointer;
     text-indent: -9999px;
-    width: 52px;
-    height: 27px;
+    width: 42px; /* Reduced from 52px */
+    height: 22px; /* Reduced from 27px */
     background: #d1d5db;
     float: right;
     border-radius: 100px;
@@ -161,10 +167,10 @@ body.dark .dark-mode-toggle label {
 .dark-mode-toggle label:after {
     content: '';
     position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 21px;
-    height: 21px;
+    top: 2px; /* Adjusted from 3px */
+    left: 2px; /* Adjusted from 3px */
+    width: 18px; /* Reduced from 21px */
+    height: 18px; /* Reduced from 21px */
     background: #fff;
     border-radius: 90px;
     transition: 0.3s;
@@ -175,10 +181,10 @@ body.dark .dark-mode-toggle label {
 }
 
 .dark-mode-toggle input:checked + label:after {
-    left: calc(100% - 3px);
+    left: calc(100% - 2px);
     transform: translateX(-100%);
 }
 
 .dark-mode-toggle label:active:after {
-    width: 45px;
+    width: 36px; /* Reduced from 45px */
 }
