@@ -2,12 +2,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const imageUpload = document.getElementById('imageUpload');
     const pasteImage = document.getElementById('pasteImage');
     const imagePreview = document.getElementById('imagePreview');
+    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+    const dropText = document.getElementById('dropText');
     const extractButton = document.getElementById('extractButton');
     const describeButton = document.getElementById('describeButton');
     const outputText = document.getElementById('outputText');
     const downloadButton = document.getElementById('downloadButton');
     const copyButton = document.getElementById('copyButton');
     const settingsButton = document.getElementById('settingsButton');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const loadingSpinner = document.querySelector('.loading');
 
     imageUpload.addEventListener('change', handleImageUpload);
     pasteImage.addEventListener('click', handleImagePaste);
@@ -15,12 +19,60 @@ document.addEventListener('DOMContentLoaded', function() {
     describeButton.addEventListener('click', describeImage);
     downloadButton.addEventListener('click', downloadText);
     copyButton.addEventListener('click', copyText);
-    settingsButton.addEventListener('click', openSettings);
+    settingsButton.addEventListener('click', toggleSettings);
+
+    // Drag and drop functionality
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        imagePreviewContainer.addEventListener(eventName, preventDefaults, false);
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        imagePreviewContainer.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        imagePreviewContainer.addEventListener(eventName, unhighlight, false);
+    });
+
+    imagePreviewContainer.addEventListener('drop', handleDrop, false);
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    function highlight() {
+        imagePreviewContainer.classList.add('bg-blue-100');
+    }
+
+    function unhighlight() {
+        imagePreviewContainer.classList.remove('bg-blue-100');
+    }
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const file = dt.files[0];
+        handleImageFile(file);
+    }
 
     function handleImageUpload(event) {
         const file = event.target.files[0];
         if (file) {
-            displayImage(file);
+            handleImageFile(file);
+        }
+    }
+
+    function handleImageFile(file) {
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                imagePreview.src = e.target.result;
+                imagePreview.classList.remove('hidden');
+                dropText.classList.add('hidden');
+            }
+            reader.readAsDataURL(file);
+        } else {
+            showError('Please select a valid image file.');
         }
     }
 
@@ -30,36 +82,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 for (const type of clipboardItem.types) {
                     if (type.startsWith('image/')) {
                         clipboardItem.getType(type).then(blob => {
-                            displayImage(blob);
+                            handleImageFile(blob);
                         });
                         return;
                     }
                 }
             }
+            showError('No image found in clipboard.');
+        }).catch(error => {
+            showError('Failed to paste image: ' + error.message);
         });
     }
 
-    function displayImage(imageSource) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            imagePreview.src = e.target.result;
-            imagePreview.style.display = 'block';
-        }
-        reader.readAsDataURL(imageSource);
-    }
-
     function extractText() {
+        if (!imagePreview.src) {
+            showError('Please upload an image first.');
+            return;
+        }
+
         chrome.storage.sync.get(['ocrSpaceApiKey'], function(result) {
             if (!result.ocrSpaceApiKey) {
-                outputText.value = "Please set your OCRSpace API key in the settings.";
+                showError('Please set your OCRSpace API key in the settings.');
                 return;
             }
 
+            showLoading();
             const apiKey = result.ocrSpaceApiKey;
-            const imageData = imagePreview.src; // Keep the full data URL
-
-            console.log('API Key (first 4 chars):', apiKey.substring(0, 4));
-            console.log('Image data length:', imageData.length);
+            const imageData = imagePreview.src;
 
             fetch('https://api.ocr.space/parse/image', {
                 method: 'POST',
@@ -70,14 +119,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: `base64Image=${encodeURIComponent(imageData)}&language=eng&isOverlayRequired=false`
             })
             .then(response => {
-                console.log('Response status:', response.status);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('OCR API response:', JSON.stringify(data, null, 2));
+                hideLoading();
                 if (data.IsErroredOnProcessing) {
                     throw new Error(data.ErrorMessage || 'Unknown error occurred during OCR processing');
                 }
@@ -88,21 +136,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                outputText.value = `An error occurred during OCR processing: ${error.message}`;
+                hideLoading();
+                showError('Error during OCR processing: ' + error.message);
             });
         });
     }
 
     function describeImage() {
+        if (!imagePreview.src) {
+            showError('Please upload an image first.');
+            return;
+        }
+
         chrome.storage.sync.get(['mistralApiKey'], function(result) {
             if (!result.mistralApiKey) {
-                outputText.value = "Please set your Mistral API key in the settings.";
+                showError('Please set your Mistral API key in the settings.');
                 return;
             }
 
+            showLoading();
             const apiKey = result.mistralApiKey;
-            const imageData = imagePreview.src.split(',')[1]; // Get base64 image data
+            const imageData = imagePreview.src.split(',')[1];
 
             fetch('https://api.mistral.ai/v1/chat/completions', {
                 method: 'POST',
@@ -139,6 +193,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
+                hideLoading();
                 if (data.choices && data.choices.length > 0) {
                     outputText.value = data.choices[0].message.content;
                 } else {
@@ -146,14 +201,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                outputText.value = `An error occurred during image description: ${error.message}`;
+                hideLoading();
+                showError('Error during image description: ' + error.message);
             });
         });
     }
 
     function downloadText() {
         const text = outputText.value;
+        if (!text) {
+            showError('No text to download.');
+            return;
+        }
         const blob = new Blob([text], {type: 'text/plain'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -164,12 +223,45 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function copyText() {
-        outputText.select();
-        document.execCommand('copy');
+        const text = outputText.value;
+        if (!text) {
+            showError('No text to copy.');
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => {
+            showMessage('Text copied to clipboard!');
+        }).catch(err => {
+            showError('Failed to copy text: ' + err);
+        });
     }
 
-    function openSettings() {
-        const settingsPanel = document.getElementById('settingsPanel');
-        settingsPanel.classList.toggle('hidden');
+    function toggleSettings() {
+        settingsPanel.classList.toggle('active');
+    }
+
+    function showLoading() {
+        loadingSpinner.style.display = 'flex';
+    }
+
+    function hideLoading() {
+        loadingSpinner.style.display = 'none';
+    }
+
+    function showError(message) {
+        outputText.value = 'Error: ' + message;
+        outputText.classList.add('text-red-500');
+        setTimeout(() => {
+            outputText.classList.remove('text-red-500');
+        }, 3000);
+    }
+
+    function showMessage(message) {
+        const originalText = outputText.value;
+        outputText.value = message;
+        outputText.classList.add('text-green-500');
+        setTimeout(() => {
+            outputText.value = originalText;
+            outputText.classList.remove('text-green-500');
+        }, 2000);
     }
 });

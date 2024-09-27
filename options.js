@@ -11,32 +11,66 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     saveOcrSpaceApiKey.addEventListener('click', function() {
-        chrome.storage.sync.set({
-            ocrSpaceApiKey: ocrSpaceApiKey.value
-        }, function() {
-            alert('OCRSpace API Key saved');
-            ocrSpaceApiKey.value = '••••••••';
-        });
+        saveApiKey('ocrSpaceApiKey', ocrSpaceApiKey.value, saveOcrSpaceApiKey);
     });
 
     saveMistralApiKey.addEventListener('click', function() {
-        chrome.storage.sync.set({
-            mistralApiKey: mistralApiKey.value
-        }, function() {
-            alert('Mistral API Key saved');
-            mistralApiKey.value = '••••••••';
+        saveApiKey('mistralApiKey', mistralApiKey.value, saveMistralApiKey);
+    });
+
+    ocrSpaceApiKey.addEventListener('focus', clearMask);
+    mistralApiKey.addEventListener('focus', clearMask);
+
+    ocrSpaceApiKey.addEventListener('blur', applyMask);
+    mistralApiKey.addEventListener('blur', applyMask);
+
+    function saveApiKey(keyName, value, button) {
+        if (!value) {
+            showError(button, 'API key cannot be empty');
+            return;
+        }
+
+        chrome.storage.sync.set({ [keyName]: value }, function() {
+            showSuccess(button, 'API Key saved');
+            applyMask({ target: document.getElementById(keyName) });
         });
-    });
+    }
 
-    ocrSpaceApiKey.addEventListener('focus', function() {
-        if (this.value === '••••••••') {
-            this.value = '';
+    function clearMask(event) {
+        if (event.target.value === '••••••••') {
+            event.target.value = '';
         }
-    });
+    }
 
-    mistralApiKey.addEventListener('focus', function() {
-        if (this.value === '••••••••') {
-            this.value = '';
+    function applyMask(event) {
+        if (event.target.value && event.target.value !== '••••••••') {
+            event.target.value = '••••••••';
         }
-    });
+    }
+
+    function showSuccess(element, message) {
+        const originalText = element.textContent;
+        element.textContent = message;
+        element.classList.add('bg-green-500');
+        element.classList.remove('hover:bg-green-600');
+        
+        setTimeout(() => {
+            element.textContent = originalText;
+            element.classList.remove('bg-green-500');
+            element.classList.add('hover:bg-green-600');
+        }, 2000);
+    }
+
+    function showError(element, message) {
+        const originalText = element.textContent;
+        element.textContent = message;
+        element.classList.add('bg-red-500');
+        element.classList.remove('hover:bg-green-600');
+        
+        setTimeout(() => {
+            element.textContent = originalText;
+            element.classList.remove('bg-red-500');
+            element.classList.add('hover:bg-green-600');
+        }, 2000);
+    }
 });
