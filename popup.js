@@ -59,6 +59,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const apiKey = result.ocrSpaceApiKey;
             const imageData = imagePreview.src.split(',')[1];
 
+            console.log('API Key (first 4 chars):', apiKey.substring(0, 4));
+            console.log('Image data length:', imageData.length);
+
             fetch('https://api.ocr.space/parse/image', {
                 method: 'POST',
                 headers: {
@@ -67,8 +70,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: `base64Image=${encodeURIComponent(imageData)}&language=eng&isOverlayRequired=false`
             })
-            .then(response => response.json())
+            .then(response => {
+                console.log('Response status:', response.status);
+                return response.json();
+            })
             .then(data => {
+                console.log('OCR API response:', data);
                 if (data.ParsedResults && data.ParsedResults.length > 0) {
                     outputText.value = data.ParsedResults[0].ParsedText;
                 } else {
