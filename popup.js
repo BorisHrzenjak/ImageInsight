@@ -20,12 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleImageUpload(event) {
         const file = event.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-                imagePreview.style.display = 'block';
-            }
-            reader.readAsDataURL(file);
+            displayImage(file);
         }
     }
 
@@ -35,18 +30,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 for (const type of clipboardItem.types) {
                     if (type.startsWith('image/')) {
                         clipboardItem.getType(type).then(blob => {
-                            const reader = new FileReader();
-                            reader.onload = function(e) {
-                                imagePreview.src = e.target.result;
-                                imagePreview.style.display = 'block';
-                            }
-                            reader.readAsDataURL(blob);
+                            displayImage(blob);
                         });
                         return;
                     }
                 }
             }
         });
+    }
+
+    function displayImage(imageSource) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+        }
+        reader.readAsDataURL(imageSource);
     }
 
     function extractText() {
