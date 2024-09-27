@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Image Insight",
+  "version": "1.0",
+  "description": "Extract text and generate descriptions from images",
+  "permissions": [
+    "storage",
+    "clipboardRead"
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html"
+}

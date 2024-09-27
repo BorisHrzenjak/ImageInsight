@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Insight</title>
+    <style>
+        body {
+            width: 300px;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+        }
+        #imagePreview {
+            max-width: 100%;
+            margin-top: 10px;
+        }
+        #outputText {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+        }
+        button {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <input type="file" id="imageUpload" accept="image/*">
+    <button id="pasteImage">Paste Image</button>
+    <img id="imagePreview">
+    <button id="extractButton">Extract</button>
+    <button id="describeButton">Describe</button>
+    <textarea id="outputText" readonly></textarea>
+    <button id="downloadButton">Download</button>
+    <button id="copyButton">Copy</button>
+    <button id="settingsButton">Settings</button>
+    <script src="popup.js"></script>
+</body>
+</html>
