@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const apiKey = result.ocrSpaceApiKey;
-            const imageData = imagePreview.src.split(',')[1];
+            const imageData = imagePreview.src; // Keep the full data URL
 
             console.log('API Key (first 4 chars):', apiKey.substring(0, 4));
             console.log('Image data length:', imageData.length);
