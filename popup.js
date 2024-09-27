@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const settingsButton = document.getElementById('settingsButton');
     const settingsPanel = document.getElementById('settingsPanel');
     const loadingSpinner = document.querySelector('.loading');
+    const darkModeToggle = document.getElementById('darkModeToggle');
 
     imageUpload.addEventListener('change', handleImageUpload);
     pasteImage.addEventListener('click', handleImagePaste);
@@ -20,6 +21,15 @@ document.addEventListener('DOMContentLoaded', function() {
     downloadButton.addEventListener('click', downloadText);
     copyButton.addEventListener('click', copyText);
     settingsButton.addEventListener('click', toggleSettings);
+    darkModeToggle.addEventListener('change', toggleDarkMode);
+
+    // Initialize dark mode
+    chrome.storage.sync.get(['darkMode'], function(result) {
+        if (result.darkMode) {
+            document.body.classList.add('dark');
+            darkModeToggle.checked = true;
+        }
+    });
 
     // Drag and drop functionality
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
@@ -42,11 +52,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function highlight() {
-        imagePreviewContainer.classList.add('bg-blue-100');
+        imagePreviewContainer.classList.add('bg-blue-100', 'dark:bg-blue-800');
     }
 
     function unhighlight() {
-        imagePreviewContainer.classList.remove('bg-blue-100');
+        imagePreviewContainer.classList.remove('bg-blue-100', 'dark:bg-blue-800');
     }
 
     function handleDrop(e) {
@@ -239,6 +249,11 @@ document.addEventListener('DOMContentLoaded', function() {
         settingsPanel.classList.toggle('active');
     }
 
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark');
+        chrome.storage.sync.set({darkMode: darkModeToggle.checked});
+    }
+
     function showLoading() {
         loadingSpinner.style.display = 'flex';
     }
@@ -249,19 +264,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showError(message) {
         outputText.value = 'Error: ' + message;
-        outputText.classList.add('text-red-500');
+        outputText.classList.add('text-red-500', 'dark:text-red-400');
         setTimeout(() => {
-            outputText.classList.remove('text-red-500');
+            outputText.classList.remove('text-red-500', 'dark:text-red-400');
         }, 3000);
     }
 
     function showMessage(message) {
         const originalText = outputText.value;
         outputText.value = message;
-        outputText.classList.add('text-green-500');
+        outputText.classList.add('text-green-500', 'dark:text-green-400');
         setTimeout(() => {
             outputText.value = originalText;
-            outputText.classList.remove('text-green-500');
+            outputText.classList.remove('text-green-500', 'dark:text-green-400');
         }, 2000);
     }
 });
