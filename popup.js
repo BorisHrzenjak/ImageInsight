@@ -72,19 +72,25 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => {
                 console.log('Response status:', response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 return response.json();
             })
             .then(data => {
-                console.log('OCR API response:', data);
+                console.log('OCR API response:', JSON.stringify(data, null, 2));
+                if (data.IsErroredOnProcessing) {
+                    throw new Error(data.ErrorMessage || 'Unknown error occurred during OCR processing');
+                }
                 if (data.ParsedResults && data.ParsedResults.length > 0) {
-                    outputText.value = data.ParsedResults[0].ParsedText;
+                    outputText.value = data.ParsedResults[0].ParsedText || "No text found in the image.";
                 } else {
                     outputText.value = "No text found in the image.";
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                outputText.value = "An error occurred during OCR processing.";
+                outputText.value = `An error occurred during OCR processing: ${error.message}`;
             });
         });
     }
