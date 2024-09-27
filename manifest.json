@@ -8,7 +8,13 @@
     "clipboardRead"
   ],
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": "ImageInsight.ico"
+  },
+  "icons": {
+    "16": "ImageInsight.ico",
+    "48": "ImageInsight.ico",
+    "128": "ImageInsight.ico"
   },
   "options_page": "options.html"
 }
