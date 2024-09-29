@@ -1,6 +1,6 @@
 # Image Insight
 
-Image Insight is a powerful Chrome extension that allows users to extract text from images and generate detailed descriptions using advanced AI technologies.
+Image Insight is a Chrome extension that allows users to extract text from images and generate detailed descriptions using OCRSpace service and Pixtral 12B model from Mistral.
 
 ## Features
 
@@ -43,14 +43,6 @@ The extension is built using HTML, CSS (with Tailwind), and JavaScript. Key file
 - `popup.js`: Core functionality for the extension
 - `options.js`: Handles settings and API key management
 - `styles.css`: Custom styles on top of Tailwind CSS
-
-For more details on the implementation, refer to the respective files:
-
-- `popup.html`: Main extension interface
-- `popup.js`: Core functionality for the extension
-- `options.js`: Handles settings and API key management
-- `styles.css`: Custom styles on top of Tailwind CSS
-
 
 ## Contributing
 
