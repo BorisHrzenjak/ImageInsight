@@ -33,7 +33,9 @@ Before using the extension, you need to set up your API keys:
 
 1. Click the "Settings" button in the extension popup.
 2. Enter your OCRSpace API key and Mistral API key in the respective fields.
-3. Click "Save" for each API key.
+   a) OCRSpace API = https://ocr.space/OCRAPI
+   b) Mistral API = https://console.mistral.ai/
+4. Click "Save" for each API key.
 
 ## Development
 
