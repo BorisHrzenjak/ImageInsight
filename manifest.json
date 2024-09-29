@@ -13,7 +13,7 @@
   },
   "icons": {
     "16": "ImageInsight.ico",
-    "48": "ImageInsight.ico",
-    "128": "ImageInsight.ico"
+    "48": "ImageInsight48.png",
+    "128": "ImageInsight128.png"
   }
 }

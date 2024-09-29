@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load saved API keys and dark mode setting
     chrome.storage.sync.get(['ocrSpaceApiKey', 'mistralApiKey', 'darkMode'], function(result) {
-        ocrSpaceApiKey.value = result.ocrSpaceApiKey ? '••••••••' : '';
-        mistralApiKey.value = result.mistralApiKey ? '••••••••' : '';
+        ocrSpaceApiKey.value = result.ocrSpaceApiKey || '';
+        mistralApiKey.value = result.mistralApiKey || '';
         darkModeToggle.checked = result.darkMode || false;
         if (result.darkMode) {
             document.body.classList.add('dark');
@@ -27,12 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleDarkMode();
     });
 
-    ocrSpaceApiKey.addEventListener('focus', clearMask);
-    mistralApiKey.addEventListener('focus', clearMask);
-
-    ocrSpaceApiKey.addEventListener('blur', applyMask);
-    mistralApiKey.addEventListener('blur', applyMask);
-
     function saveApiKey(keyName, value, button) {
         if (!value) {
             showError(button, 'API key cannot be empty');
@@ -41,20 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         chrome.storage.sync.set({ [keyName]: value }, function() {
             showSuccess(button, 'API Key saved');
-            applyMask({ target: document.getElementById(keyName) });
         });
-    }
-
-    function clearMask(event) {
-        if (event.target.value === '••••••••') {
-            event.target.value = '';
-        }
-    }
-
-    function applyMask(event) {
-        if (event.target.value && event.target.value !== '••••••••') {
-            event.target.value = '••••••••';
-        }
     }
 
     function toggleDarkMode() {
