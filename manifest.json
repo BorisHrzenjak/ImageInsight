@@ -12,7 +12,7 @@
     "default_icon": "ImageInsight.ico"
   },
   "icons": {
-    "16": "ImageInsight.ico",
+    "16": "ImageInsight16.png",
     "48": "ImageInsight48.png",
     "128": "ImageInsight128.png"
   }
