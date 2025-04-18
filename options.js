@@ -39,7 +39,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function toggleDarkMode() {
-        document.body.classList.toggle('dark');
+        if (darkModeToggle.checked) {
+            document.body.classList.add('dark');
+        } else {
+            document.body.classList.remove('dark');
+        }
         chrome.storage.sync.set({darkMode: darkModeToggle.checked});
     }
 
