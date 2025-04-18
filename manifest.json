@@ -9,11 +9,11 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "ImageInsight.ico"
+    "default_icon": "icons/ImageInsight128.png"
   },
   "icons": {
-    "16": "ImageInsight16.png",
-    "48": "ImageInsight48.png",
-    "128": "ImageInsight128.png"
+    "16": "icons/ImageInsight16.png",
+    "48": "icons/ImageInsight48.png",
+    "128": "icons/ImageInsight128.png"
   }
 }
