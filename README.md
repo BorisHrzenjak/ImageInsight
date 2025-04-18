@@ -2,7 +2,8 @@
 
 Image Insight is a Chrome extension that allows users to extract text from images and generate detailed descriptions using OCRSpace service and Pixtral 12B model from Mistral.
 
-![image (1)](https://github.com/user-attachments/assets/9467da2d-9677-48db-a074-4db3b420e927)
+![ImageInsight](https://github.com/user-attachments/assets/51e79ac0-ac01-4f87-9ace-f3a9f4701e77)
+
 
 
 ## Features
